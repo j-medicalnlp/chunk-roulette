@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チャンクルーレット</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .roulette-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+        }
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 5px solid #333;
+            background: conic-gradient(
+                #ff9999 0% 33.33%,
+                #99ff99 33.33% 66.66%,
+                #9999ff 66.66% 100%
+            );
+            transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+        }
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 30px solid #333;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 30px;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="roulette-container">
+        <div class="pointer"></div>
+        <div class="wheel" id="wheel"></div>
+    </div>
+    <button onclick="spinRoulette()">回す！</button>
+    <div class="result" id="result"></div>
+
+    <script>
+        const segments = ["チャンクアップ", "チャンクダウン", "チャンクラテラル"];
+        let currentRotation = 0;
+
+        function spinRoulette() {
+            const wheel = document.getElementById("wheel");
+            const resultDisplay = document.getElementById("result");
+
+            const spinDegree = 360 * 5 + Math.floor(Math.random() * 360);
+            currentRotation += spinDegree;
+
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                const normalizedRotation = currentRotation % 360;
+                let index;
+                if (normalizedRotation < 120) {
+                    index = 0; // チャンクアップ
+                } else if (normalizedRotation < 240) {
+                    index = 1; // チャンクダウン
+                } else {
+                    index = 2; // チャンクラテラル
+                }
+                resultDisplay.textContent = segments[index];
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
