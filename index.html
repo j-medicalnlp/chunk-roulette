@@ -38,24 +38,24 @@
             font-size: 18px;
         }
         .wheel .label-up {
-            transform: rotate(0deg) translateY(-70px) rotate(0deg);
+            transform: rotate(0deg) translateY(-75px) rotate(0deg);
         }
         .wheel .label-down {
-            transform: rotate(120deg) translateY(-70px) rotate(-120deg);
+            transform: rotate(120deg) translateY(-75px) rotate(-120deg);
         }
         .wheel .label-lateral {
-            transform: rotate(240deg) translateY(-70px) rotate(-240deg);
+            transform: rotate(240deg) translateY(-75px) rotate(-240deg);
         }
         .pointer {
             position: absolute;
-            top: -20px;
+            top: -30px;
             left: 50%;
             transform: translateX(-50%) rotate(0deg);
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 50px solid #333;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 60px solid #333;
         }
         .result {
             margin-top: 20px;
@@ -95,7 +95,7 @@
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
             setTimeout(() => {
-                const normalizedRotation = (360 - (currentRotation % 360) + 30) % 360;
+                const normalizedRotation = (360 - (currentRotation % 360) + 60) % 360;
                 let index;
                 if (normalizedRotation < 120) {
                     index = 0; // チャンクアップ
