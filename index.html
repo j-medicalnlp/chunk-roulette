@@ -33,20 +33,29 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            transform-origin: 0 0;
+            transform-origin: center;
             font-weight: bold;
             font-size: 18px;
         }
+        .wheel .label-up {
+            transform: rotate(0deg) translateY(-90px) rotate(0deg);
+        }
+        .wheel .label-down {
+            transform: rotate(120deg) translateY(-90px) rotate(-120deg);
+        }
+        .wheel .label-lateral {
+            transform: rotate(240deg) translateY(-90px) rotate(-240deg);
+        }
         .pointer {
             position: absolute;
-            top: -30px;
+            top: -50px;
             left: 50%;
-            transform: translateX(-50%) rotate(180deg);
+            transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 30px solid #333;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 50px solid #333;
         }
         .result {
             margin-top: 20px;
@@ -64,9 +73,9 @@
     <div class="roulette-container">
         <div class="pointer"></div>
         <div class="wheel" id="wheel">
-            <span style="transform: rotate(0deg) translate(60px) rotate(0deg);">アップ</span>
-            <span style="transform: rotate(120deg) translate(60px) rotate(-120deg);">ダウン</span>
-            <span style="transform: rotate(240deg) translate(60px) rotate(-240deg);">ラテラル</span>
+            <span class="label-up">アップ</span>
+            <span class="label-down">ダウン</span>
+            <span class="label-lateral">ラテラル</span>
         </div>
     </div>
     <button onclick="spinRoulette()">回す！</button>
