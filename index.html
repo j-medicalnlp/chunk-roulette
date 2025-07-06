@@ -13,8 +13,8 @@
         .slot-container {
             display: inline-block;
             border: 5px solid #333;
-            width: 120px;
-            height: 150px;
+            width: 300px;
+            height: 100px;
             overflow: hidden;
             position: relative;
             margin: 0 10px;
@@ -25,36 +25,15 @@
             animation-fill-mode: forwards;
         }
         .slot div {
-            height: 150px;
-            line-height: 150px;
+            height: 100px;
+            line-height: 100px;
             font-size: 24px;
             font-weight: bold;
+            width: 100%;
         }
         .red { background-color: #ff9999; }
         .green { background-color: #99ff99; }
         .blue { background-color: #9999ff; }
-
-        .result {
-            margin-top: 20px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .legend {
-            margin-top: 30px;
-            font-size: 18px;
-        }
-        .legend-item {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        .legend-color {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            vertical-align: middle;
-            margin-right: 5px;
-        }
 
         button {
             margin-top: 30px;
@@ -75,23 +54,15 @@
         </div>
     </div>
 
-    <div class="legend">
-        <div class="legend-item"><span class="legend-color red"></span>チャンクアップ</div>
-        <div class="legend-item"><span class="legend-color green"></span>チャンクダウン</div>
-        <div class="legend-item"><span class="legend-color blue"></span>チャンクラテラル</div>
-    </div>
-
     <button onclick="spinSlot()">回す！</button>
-    <div class="result" id="result"></div>
 
     <script>
+        const segmentHeight = 100;
         const segments = ["チャンクアップ", "チャンクダウン", "チャンクラテラル"];
 
         function spinSlot() {
             const slot = document.getElementById("slot");
-            const resultDisplay = document.getElementById("result");
 
-            const segmentHeight = 150;
             const spins = 10 + Math.floor(Math.random() * 5);
             const resultIndex = Math.floor(Math.random() * 3);
             const totalHeight = segmentHeight * (spins * 3 + resultIndex);
@@ -100,8 +71,6 @@
             slot.style.transform = `translateY(-${totalHeight}px)`;
 
             setTimeout(() => {
-                resultDisplay.textContent = segments[resultIndex];
-                // リセット位置を調整
                 slot.style.transition = "none";
                 slot.style.transform = `translateY(-${resultIndex * segmentHeight}px)`;
             }, 2000);
