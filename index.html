@@ -30,23 +30,6 @@
             position: relative;
             z-index: 1;
         }
-        .wheel span {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform-origin: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .wheel .label-up {
-            transform: rotate(0deg) translateY(-85px) rotate(0deg);
-        }
-        .wheel .label-down {
-            transform: rotate(120deg) translateY(-85px) rotate(-120deg);
-        }
-        .wheel .label-lateral {
-            transform: rotate(240deg) translateY(-85px) rotate(-240deg);
-        }
         .pointer {
             position: absolute;
             top: -30px;
@@ -64,6 +47,25 @@
             font-size: 24px;
             font-weight: bold;
         }
+        .legend {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        .legend-item {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        .red { background-color: #ff9999; }
+        .green { background-color: #99ff99; }
+        .blue { background-color: #9999ff; }
+
         button {
             margin-top: 30px;
             padding: 10px 20px;
@@ -74,12 +76,15 @@
 <body>
     <div class="roulette-container">
         <div class="pointer"></div>
-        <div class="wheel" id="wheel">
-            <span class="label-up">アップ</span>
-            <span class="label-down">ダウン</span>
-            <span class="label-lateral">ラテラル</span>
-        </div>
+        <div class="wheel" id="wheel"></div>
     </div>
+
+    <div class="legend">
+        <div class="legend-item"><span class="legend-color red"></span>チャンクアップ</div>
+        <div class="legend-item"><span class="legend-color green"></span>チャンクダウン</div>
+        <div class="legend-item"><span class="legend-color blue"></span>チャンクラテラル</div>
+    </div>
+
     <button onclick="spinRoulette()">回す！</button>
     <div class="result" id="result"></div>
 
