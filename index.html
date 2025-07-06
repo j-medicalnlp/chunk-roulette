@@ -28,6 +28,7 @@
             );
             transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
             position: relative;
+            z-index: 1;
         }
         .wheel span {
             position: absolute;
@@ -38,13 +39,13 @@
             font-size: 18px;
         }
         .wheel .label-up {
-            transform: rotate(0deg) translateY(-75px) rotate(0deg);
+            transform: rotate(0deg) translateY(-85px) rotate(0deg);
         }
         .wheel .label-down {
-            transform: rotate(120deg) translateY(-75px) rotate(-120deg);
+            transform: rotate(120deg) translateY(-85px) rotate(-120deg);
         }
         .wheel .label-lateral {
-            transform: rotate(240deg) translateY(-75px) rotate(-240deg);
+            transform: rotate(240deg) translateY(-85px) rotate(-240deg);
         }
         .pointer {
             position: absolute;
@@ -53,9 +54,10 @@
             transform: translateX(-50%) rotate(0deg);
             width: 0;
             height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
             border-top: 60px solid #333;
+            z-index: 2;
         }
         .result {
             margin-top: 20px;
