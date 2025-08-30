@@ -1,80 +1,83 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>チャンクスロット</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 50px;
-        }
-        .slot-container {
-            display: inline-block;
-            border: 5px solid #333;
-            width: 300px;
-            height: 100px;
-            overflow: hidden;
-            position: relative;
-            margin: 0 10px;
-        }
-        .slot {
-            display: flex;
-            flex-direction: column;
-            animation-fill-mode: forwards;
-        }
-        .slot div {
-            height: 100px;
-            line-height: 100px;
-            font-size: 24px;
-            font-weight: bold;
-            width: 100%;
-        }
-        .red { background-color: #ff9999; }
-        .green { background-color: #99ff99; }
-        .blue { background-color: #9999ff; }
-
-        button {
-            margin-top: 30px;
-            padding: 10px 20px;
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>画像ルーレット（12枚・等確率）</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; text-align: center; margin: 40px 12px; }
+    .roulette-container { max-width: 420px; margin: 0 auto; }
+    .roulette-image { width: 100%; height: auto; border: 3px solid #444; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,.08); transition: opacity .2s ease; }
+    .controls { margin-top: 16px; }
+    button { appearance: none; border: 0; background: #111; color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; }
+    button[disabled] { opacity: .55; cursor: not-allowed; }
+    .note { color: #666; font-size: 13px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-    <div class="slot-container">
-        <div class="slot" id="slot">
-            <div class="red">チャンクアップ</div>
-            <div class="green">チャンクダウン</div>
-            <div class="blue">チャンクラテラル</div>
-            <div class="red">チャンクアップ</div>
-            <div class="green">チャンクダウン</div>
-            <div class="blue">チャンクラテラル</div>
-        </div>
+  <h1 style="font-size:22px;margin-bottom:14px;">チャンクルーレット</h1>
+  <div class="roulette-container">
+    <!-- 初期表示は img1.jpg。必要に応じて任意の画像に変更可 -->
+    <img id="rouletteImage" class="roulette-image" src="img1.jpg" alt="ルーレット画像" />
+    <div class="controls">
+      <button id="spinBtn" onclick="spin()">回す！</button>
+      <div class="note">12枚の画像から<strong>等確率</strong>で1枚を表示します</div>
     </div>
+  </div>
 
-    <button onclick="spinSlot()">回す！</button>
+  <script>
+    // === 画像の置き場所とファイル名 ===
+    // 画像をリポジトリ直下に置く場合は PREFIX を空文字のままにします。
+    // 例: img1.jpg ～ img12.jpg
+    // サブフォルダに置く場合は、PREFIX = "images/" のように変更してください。
+    const PREFIX = ""; // 例: "images/"
 
-    <script>
-        const segmentHeight = 100;
-        const segments = ["チャンクアップ", "チャンクダウン", "チャンクラテラル"];
+    // 画像ファイル名（等確率で選ぶ対象）
+    const images = Array.from({ length: 12 }, (_, i) => `${PREFIX}img${i + 1}.jpg`);
 
-        function spinSlot() {
-            const slot = document.getElementById("slot");
+    // 事前に軽くプリロード（表示切替のチラつきを減らす）
+    images.forEach(src => { const im = new Image(); im.src = src; });
 
-            const spins = 10 + Math.floor(Math.random() * 5);
-            const resultIndex = Math.floor(Math.random() * 3);
-            const totalHeight = segmentHeight * (spins * 3 + resultIndex);
+    // スピン演出 + 等確率決定
+    let spinning = false;
+    function spin() {
+      if (spinning) return; // 多重押し防止
+      spinning = true;
+      const img = document.getElementById('rouletteImage');
+      const btn = document.getElementById('spinBtn');
+      btn.disabled = true;
+      btn.textContent = '回転中...';
 
-            slot.style.transition = "transform 2s ease-out";
-            slot.style.transform = `translateY(-${totalHeight}px)`;
+      // 透明度を下げて「回転中」を視覚化
+      img.style.opacity = '0.4';
 
-            setTimeout(() => {
-                slot.style.transition = "none";
-                slot.style.transform = `translateY(-${resultIndex * segmentHeight}px)`;
-            }, 2000);
+      // 最終結果（等確率 1/10）
+      const finalIndex = Math.floor(Math.random() * images.length);
+
+      // 見た目の演出: 高速→減速して止まる
+      let step = 0;
+      let interval = 60;     // 開始間隔(ms)
+      const steps = 18;      // 切替回数（演出用）
+
+      const tick = () => {
+        // 演出用に一時的にランダム表示
+        img.src = images[Math.floor(Math.random() * images.length)];
+        step++;
+        interval += 20; // だんだん遅くする
+        if (step < steps) {
+          setTimeout(tick, interval);
+        } else {
+          // 最終決定（ここだけが確率に影響）
+          img.src = images[finalIndex];
+          // 回転終了: 透明度とボタンを元に戻す
+          img.style.opacity = '1';
+          btn.disabled = false;
+          btn.textContent = '回す！';
+          spinning = false;
         }
-    </script>
+      };
+      setTimeout(tick, interval);
+    }
+  </script>
 </body>
 </html>
